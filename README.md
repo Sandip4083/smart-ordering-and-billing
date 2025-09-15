@@ -16,6 +16,9 @@ http://localhost/FoodMandu – Restaurant Management System/
 PHP
 HTML5
 CSS3
+MySQL (if database is used)
+
+
 
 🖼️ Screenshots
 1. Home
@@ -27,11 +30,7 @@ CSS3
 3. Booking page
    ![alt text](image-2.png)
 
-🧑‍💻 Technologies Used
-PHP
-HTML5
-CSS3
-MySQL (if database is used)
+
 
 ## 🌟 Features
 
