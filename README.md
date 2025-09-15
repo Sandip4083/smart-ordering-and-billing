@@ -65,3 +65,4 @@ Place the project folder in your web server's root directory (e.g., htdocs for X
 Start Apache and MySQL using XAMPP or any other local server.
 Import the database if provided (.sql file may be inside project; check folder).
 
+
