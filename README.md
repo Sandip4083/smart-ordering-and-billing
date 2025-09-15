@@ -59,10 +59,4 @@ Start Apache and MySQL using XAMPP or any other local server.
 Import the database if provided (.sql file may be inside project; check folder).
 
 
-🛠️ Installation
-Clone this repository or download the ZIP.
-Place the project folder in your web server's root directory (e.g., htdocs for XAMPP).
-Start Apache and MySQL using XAMPP or any other local server.
-Import the database if provided (.sql file may be inside project; check folder).
-
 
