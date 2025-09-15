@@ -31,7 +31,6 @@ CSS3
 PHP
 HTML5
 CSS3
->>>>>>> 208cfb1 (Updated project files and README)
 MySQL (if database is used)
 
 ## 🌟 Features
