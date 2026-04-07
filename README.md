@@ -4,6 +4,8 @@
 
 Here, guests can easily **order food** for delivery/takeaway or **reserve a table** with a pre-ordered meal, all seamlessly managed by an intuitive admin dashboard and automated billing system.
 
+**Live/Demo :** smart-order-and-billing-portal-vjwy.vercel.app
+
 ## 🚀 Key Features
 
 *   **Food Ordering & Cart**: A premium, mobile-responsive cart system allowing users to add multiple dishes, set quantities, select Dining Modes (Delivery, Dine-In, Takeaway), add tips, and apply promotional codes.
