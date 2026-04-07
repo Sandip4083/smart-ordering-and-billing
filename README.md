@@ -4,7 +4,7 @@
 
 Here, guests can easily **order food** for delivery/takeaway or **reserve a table** with a pre-ordered meal, all seamlessly managed by an intuitive admin dashboard and automated billing system.
 
-**Live/Demo :** smart-order-and-billing-portal-vjwy.vercel.app
+🌍 **Live Demo:** [https://smart-order-and-billing-portal-vjwy.vercel.app/](https://smart-order-and-billing-portal-vjwy.vercel.app/)
 
 ## 🚀 Key Features
 
