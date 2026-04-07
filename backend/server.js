@@ -22,4 +22,8 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log('❌ MongoDB Error:', err.message));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+}
+
+module.exports = app;
