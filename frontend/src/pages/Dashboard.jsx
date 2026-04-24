@@ -5,7 +5,7 @@ import API from '../api';
 import { TimePicker, DatePicker } from '../components/TimePicker';
 import styles from './Dashboard.module.css';
 
-const CUISINES = ['Beef','Chicken','Seafood','Pasta','Lamb','Dessert','Vegan','Vegetarian','Starter','Breakfast','Pork','Miscellaneous'];
+const CUISINES = ['North Indian','South Indian','East Indian','West Indian','Street Food','Biryani','Thali','Desserts','Breads','Drinks'];
 
 const TABS = [
   { id: 'overview',      icon: <LayoutDashboard size={18} />, label: 'Overview' },
@@ -118,9 +118,18 @@ export default function Dashboard() {
     if (!soTime) return showToast('Please select delivery time', 'error');
     if (!soAddress.trim()) return showToast('Please enter delivery address', 'error');
     try {
-      await Promise.all(soCart.map(item =>
-        API.post('/orders', { foodItem: item.name, cuisine: soCuisine, deliveryPlace: soAddress, deliveryTime: soTime })
-      ));
+      await API.post('/orders', {
+        items: soCart.map(item => ({
+          foodItem: item.name,
+          cuisine: item.cuisine || soCuisine,
+          price: item.price,
+          quantity: 1,
+          imgUrl: item.img
+        })),
+        orderType: 'delivery',
+        deliveryPlace: soAddress,
+        deliveryTime: soTime
+      });
       const { data } = await API.get('/orders');
       setOrders(data);
       setSoCart([]); setSoAddress(''); setSoTime('');
@@ -241,6 +250,7 @@ export default function Dashboard() {
   };
 
   const statusColor = { Pending:'#f39c12','In Progress':'#3498db',Completed:'#27ae60',Cancelled:'#e74c3c' };
+  const STATUS_STEPS = ['Pending', 'In Progress', 'Completed'];
 
   const stats = {
     activeOrders: orders.filter(o => o.status === 'Pending' || o.status === 'In Progress').length,
@@ -250,6 +260,7 @@ export default function Dashboard() {
     totalBillAmount: bills.filter(b => b.status === 'pending').reduce((s, b) => s + b.total, 0),
     cancelledOrders: orders.filter(o => o.status === 'Cancelled').length,
     totalSpent: bills.filter(b => b.status === 'paid').reduce((s, b) => s + b.total, 0),
+    loyaltyPoints: orders.filter(o => o.status === 'Completed').length * 25,
   };
 
   // Filtered orders
@@ -268,7 +279,7 @@ export default function Dashboard() {
       <div className={styles.header}>
         <div>
           <h1>{getGreeting()}, <span className={styles.gold}>{username}</span></h1>
-          <p>{stats.activeOrders} active order{stats.activeOrders !== 1 ? 's' : ''} · {stats.activeReservations} reservation{stats.activeReservations !== 1 ? 's' : ''} · <strong><Star size={12} fill="var(--gold)" style={{marginRight:2}} /> {orders.length * 15} Points</strong></p>
+          <p>{stats.activeOrders} active order{stats.activeOrders !== 1 ? 's' : ''} · {stats.activeReservations} reservation{stats.activeReservations !== 1 ? 's' : ''} · <strong><Star size={12} fill="var(--gold)" style={{marginRight:2}} /> {stats.loyaltyPoints} Points</strong></p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div className={styles.hStats}>
@@ -365,6 +376,53 @@ export default function Dashboard() {
                       <span className={styles.statusPill} style={{ background: statusColor[o.status] + '22', color: statusColor[o.status] }}>{o.status}</span>
                     </div>
                   ))}
+                </div>
+              </>
+            )}
+
+            {/* Spending Analytics */}
+            {orders.length > 0 && (
+              <>
+                <h3 className={styles.secTitle}>Spending Overview</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+                  <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+                    <h4 style={{ color: 'var(--muted)', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>Order Type Breakdown</h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                      {['delivery', 'dine-in', 'takeaway'].map(t => {
+                        const cnt = orders.filter(o => o.orderType === t).length;
+                        const pct = orders.length > 0 ? Math.round((cnt / orders.length) * 100) : 0;
+                        return (
+                          <div key={t}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                              <span style={{ fontSize: '0.82rem', color: 'var(--text)', fontWeight: 600, textTransform: 'capitalize' }}>{t === 'delivery' ? '🚴 ' : t === 'dine-in' ? '🍽️ ' : '🥡 '}{t}</span>
+                              <span style={{ fontSize: '0.78rem', color: 'var(--gold)', fontWeight: 700 }}>{cnt} ({pct}%)</span>
+                            </div>
+                            <div style={{ height: 6, background: 'var(--bg)', borderRadius: 4, overflow: 'hidden' }}>
+                              <div style={{ width: `${pct}%`, height: '100%', background: 'var(--gold-grad)', borderRadius: 4, transition: 'width 0.6s ease' }} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+                    <h4 style={{ color: 'var(--muted)', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>Loyalty Rewards</h4>
+                    <div style={{ textAlign: 'center', padding: '16px 0' }}>
+                      <div style={{ fontSize: '2.4rem', fontWeight: 900, color: 'var(--gold)', marginBottom: 4 }}>{stats.loyaltyPoints}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--muted)', marginBottom: 12 }}>Points Earned</div>
+                      <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
+                        {[
+                          { pts: 100, reward: '₹50 OFF' },
+                          { pts: 250, reward: '₹150 OFF' },
+                          { pts: 500, reward: 'Free Thali' },
+                        ].map(r => (
+                          <div key={r.pts} style={{ padding: '6px 14px', borderRadius: 20, border: `1px solid ${stats.loyaltyPoints >= r.pts ? 'var(--gold)' : 'var(--border)'}`, background: stats.loyaltyPoints >= r.pts ? 'rgba(184,158,96,0.08)' : 'var(--bg)', fontSize: '0.72rem', fontWeight: 600, color: stats.loyaltyPoints >= r.pts ? 'var(--gold)' : 'var(--muted)' }}>
+                            {stats.loyaltyPoints >= r.pts ? '🎉 ' : '🔒 '}{r.reward} ({r.pts}pts)
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </>
             )}
@@ -571,15 +629,46 @@ export default function Dashboard() {
                 {filteredOrders.map(o => (
                   <div key={o._id} className={styles.orderCard}>
                     <div className={styles.orderLeft}>
-                      <div className={styles.orderIcon}><ShoppingBag size={24} color="#b89e60" /></div>
+                      {o.imgUrl && <img src={o.imgUrl} alt={o.foodItem} style={{ width: 52, height: 52, borderRadius: 12, objectFit: 'cover', flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
+                      {!o.imgUrl && <div className={styles.orderIcon}><ShoppingBag size={24} color="#b89e60" /></div>}
                       <div>
-                        <p className={styles.orderName}>{o.foodItem}</p>
+                        <p className={styles.orderName}>
+                          {o.items && o.items.length > 0 
+                            ? o.items.map(i => `${i.foodItem} x${i.quantity}`).join(', ') 
+                            : o.foodItem}
+                        </p>
                         <p className={styles.orderMeta}>{o.cuisine} · {o.deliveryPlace} · {o.deliveryTime}</p>
                         <p className={styles.orderDate}>{new Date(o.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}</p>
+                        {/* Order Tracking Timeline */}
+                        {o.status !== 'Cancelled' && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginTop: 8 }}>
+                            {STATUS_STEPS.map((step, i) => {
+                              const currentIdx = STATUS_STEPS.indexOf(o.status);
+                              const isActive = i <= currentIdx;
+                              const isCurrent = i === currentIdx;
+                              return (
+                                <div key={step} style={{ display: 'flex', alignItems: 'center' }}>
+                                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                                    <div style={{ width: isCurrent ? 14 : 10, height: isCurrent ? 14 : 10, borderRadius: '50%', background: isActive ? statusColor[step] : 'var(--border)', transition: '0.3s', boxShadow: isCurrent ? `0 0 8px ${statusColor[step]}60` : 'none' }} />
+                                    <span style={{ fontSize: '0.55rem', color: isActive ? statusColor[step] : 'var(--muted)', fontWeight: isActive ? 700 : 400, whiteSpace: 'nowrap' }}>{step}</span>
+                                  </div>
+                                  {i < STATUS_STEPS.length - 1 && (
+                                    <div style={{ width: 28, height: 2, background: i < currentIdx ? statusColor[STATUS_STEPS[i+1]] : 'var(--border)', margin: '0 2px', marginBottom: 14, transition: '0.3s' }} />
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className={styles.orderRight}>
                       <span className={styles.statusPill} style={{ background: statusColor[o.status]+'22', color: statusColor[o.status] }}>{o.status}</span>
+                      <span style={{ color: 'var(--gold)', fontWeight: 700, fontSize: '0.9rem' }}>
+                        ₹{o.items && o.items.length > 0 
+                          ? o.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+                          : (o.price * (o.quantity || 1))}
+                      </span>
                       <div style={{ display: 'flex', gap: 6 }}>
                         <button onClick={() => toggleFavorite(o)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }} title="Toggle favorite">
                           <Heart size={16} color={favorites.includes(o.foodItem) ? '#e91e63' : 'var(--muted)'} fill={favorites.includes(o.foodItem) ? '#e91e63' : 'none'} />

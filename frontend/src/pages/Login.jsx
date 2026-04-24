@@ -81,7 +81,7 @@ export default function CustomerLogin() {
       {/* Left panel — dynamic video brand */}
       <div className={styles.left}>
         <img 
-          src="/restu/image.png" 
+          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80" 
           alt="Restaurant Background" 
           className={styles.bgVideo} 
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -91,9 +91,9 @@ export default function CustomerLogin() {
         <div className={styles.leftInner}>
           <Link to="/" className={styles.brandLogo}>🍽️</Link>
           <h1>Smart Order &amp;<br />Billing Portal</h1>
-          <p>Order authentic dishes from 6 world cuisines. Reserve your table. Track your bills — all in one place, now with an extraordinary experience.</p>
+          <p>Order authentic Indian dishes from every state. Reserve your table. Track your bills — all in one place, now with an extraordinary experience.</p>
           <div className={styles.featureList}>
-            {['⚡ Instant ordering','📅 Table reservations','🧾 Digital billing','🌍 6 world cuisines'].map(f => (
+            {['⚡ Instant ordering','📅 Table reservations','🧾 Digital billing','🇮🇳 80+ Indian dishes'].map(f => (
               <div key={f} className={styles.featureItem}>
                 <span className={styles.featureCheck}>✓</span> {f}
               </div>
@@ -177,7 +177,7 @@ export default function CustomerLogin() {
             </form>
           )}
 
-          <p className={styles.footNote}>Customer portal only. Menu is available without login.</p>
+
         </div>
       </div>
     </div>

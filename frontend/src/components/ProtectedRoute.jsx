@@ -5,9 +5,11 @@ export default function ProtectedRoute({ children, requiredRole }) {
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
 
-  // Not logged in → send to login
-  if (!token) return <Navigate to="/login" replace />;
-
+  // Not logged in → send to correct login
+  if (!token) {
+    if (requiredRole === 'employee') return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/login" replace />;
+  }
   // Wrong role → send to correct dashboard
   if (requiredRole && role !== requiredRole) {
     return <Navigate to={role === 'employee' ? '/employee' : '/dashboard'} replace />;

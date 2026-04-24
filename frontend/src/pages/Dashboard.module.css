@@ -312,11 +312,84 @@
 .emptyState h3 { color: var(--text); font-size: 1.05rem; margin-bottom: 8px; font-weight: 600; }
 .emptyState p { color: var(--muted); font-size: 0.85rem; }
 
-/* Responsive */
+/* Responsive — Tablet */
 @media (max-width: 900px) {
   .header { flex-direction: column; align-items: flex-start; gap: 16px; padding: 18px 20px; }
   .tabBar { padding: 8px 16px 0; }
   .content { padding: 20px; }
   .reserveGrid { grid-template-columns: 1fr; }
   .statGrid { grid-template-columns: repeat(2, 1fr); }
+  .quickGrid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .gridForm { grid-template-columns: 1fr; }
+  .hStats { gap: 16px; }
+}
+
+/* Responsive — Mobile */
+@media (max-width: 600px) {
+  .header { padding: 14px 16px; }
+  .header h1 { font-size: 1.2rem; }
+  .header > div:first-child > p { font-size: 0.75rem; }
+  .hStats { gap: 12px; }
+  .hStat strong { font-size: 1.3rem; }
+  .hStat span { font-size: 0.62rem; }
+
+  .tabBar { padding: 6px 10px 0; gap: 0; }
+  .tab { padding: 8px 10px; font-size: 0.75rem; }
+  .tabIcon { font-size: 0.85rem; }
+
+  .content { padding: 14px; }
+  .pageTitle { font-size: 1.2rem; }
+  .pageSub { font-size: 0.78rem; margin-bottom: 16px; }
+  .secTitle { font-size: 0.85rem; margin: 20px 0 10px; }
+
+  .statGrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .statCard { padding: 14px 10px; }
+  .statVal { font-size: 1.4rem; }
+  .statLabel { font-size: 0.65rem; }
+
+  .quickGrid { grid-template-columns: 1fr; gap: 10px; }
+  .quickCard { padding: 14px; }
+  .quickIcon { width: 36px; height: 36px; font-size: 1rem; }
+  .quickCard h4 { font-size: 0.85rem; }
+  .quickCard p { font-size: 0.72rem; }
+
+  .foodGrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .foodImg { height: 85px; }
+  .foodInfo { padding: 8px; }
+  .foodName { font-size: 0.7rem; }
+  .foodPrice { font-size: 0.72rem; }
+
+  .catScroll { gap: 6px; }
+  .catChip { padding: 5px 12px; font-size: 0.72rem; }
+
+  .orderCard { padding: 14px; flex-wrap: wrap; gap: 10px; }
+  .orderName { font-size: 0.82rem; }
+  .orderMeta { font-size: 0.72rem; }
+  .orderDate { font-size: 0.68rem; }
+
+  .resvCard { padding: 16px; }
+  .resvDetails { gap: 10px; font-size: 0.75rem; }
+
+  .billCard { font-size: 0.85rem; }
+  .billHead { padding: 14px 16px; }
+  .billItems { padding: 12px 16px; }
+  .billFooter { padding: 14px 16px; }
+
+  .gridForm { grid-template-columns: 1fr; }
+  .reserveGrid { grid-template-columns: 1fr; }
+  .formRow2 { grid-template-columns: 1fr; }
+
+  .bigBtn { padding: 11px; font-size: 0.88rem; }
+  .inp { padding: 10px 12px; font-size: 0.85rem; }
+
+  .fbForm { padding: 20px; }
+  .star { font-size: 1.6rem; }
+
+  .emptyState { padding: 40px 16px; }
+  .emptyState p:first-child { font-size: 2rem; }
+
+  .billBanner { flex-direction: column; gap: 12px; text-align: center; }
+  .bannerBtn { width: 100%; }
+
+  .toast { bottom: 12px; right: 12px; left: 12px; max-width: none; padding: 12px 16px; font-size: 0.82rem; }
 }

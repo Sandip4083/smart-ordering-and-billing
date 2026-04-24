@@ -7,32 +7,65 @@ const auth = require('../middleware/auth');
 // Place order → auto-generates bill immediately
 router.post('/', auth, async (req, res) => {
   try {
-    const { foodItem, cuisine, price, quantity, orderType, deliveryPlace, deliveryTime, imgUrl } = req.body;
-    const qty = Number(quantity) || 1;
-    const unitPrice = Number(price) || 0;
+    const { items, orderType, deliveryPlace, deliveryTime } = req.body;
+    
+    // Support both single item (legacy) and multi-item (modern)
+    let orderItems = [];
+    if (items && Array.isArray(items)) {
+      orderItems = items.map(i => ({
+        foodItem: i.foodItem || i.name,
+        cuisine: i.cuisine,
+        price: Number(i.price) || 0,
+        quantity: Number(i.quantity) || 1,
+        imgUrl: i.imgUrl || i.img
+      }));
+    } else {
+      // Legacy support for single item POST
+      const { foodItem, cuisine, price, quantity, imgUrl } = req.body;
+      orderItems = [{
+        foodItem, cuisine,
+        price: Number(price) || 0,
+        quantity: Number(quantity) || 1,
+        imgUrl
+      }];
+    }
+
+    if (orderItems.length === 0) return res.status(400).json({ msg: 'Order must have items' });
 
     const order = new Order({
       customer: req.user.id,
       customerName: req.user.username,
-      foodItem, cuisine,
-      price: unitPrice,
-      quantity: qty,
+      items: orderItems,
+      // Fallback fields for summary
+      foodItem: orderItems[0].foodItem,
+      cuisine: orderItems[0].cuisine,
+      price: orderItems[0].price,
+      quantity: orderItems[0].quantity,
+      imgUrl: orderItems[0].imgUrl,
+
       orderType: orderType || 'delivery',
-      deliveryPlace, deliveryTime,
-      imgUrl,
+      deliveryPlace: deliveryPlace || 'N/A',
+      deliveryTime: deliveryTime || 'ASAP',
       statusHistory: [{ status: 'Pending', time: new Date() }],
     });
     await order.save();
 
-    // ✅ Auto-generate bill immediately
-    const subtotal = +(unitPrice * qty).toFixed(2);
+    // ✅ Auto-generate bill immediately for ALL items
+    const subtotal = +orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
     const tax = +(subtotal * 0.1).toFixed(2);
     const total = +(subtotal + tax).toFixed(2);
+    
     const bill = new Bill({
       customer: req.user.id,
       customerName: req.user.username,
       orderId: order._id,
-      orders: [{ foodItem, cuisine, price: unitPrice, quantity: qty, currency: '₹' }],
+      orders: orderItems.map(i => ({
+        foodItem: i.foodItem,
+        cuisine: i.cuisine,
+        price: i.price,
+        quantity: i.quantity,
+        currency: '₹'
+      })),
       subtotal, tax, total,
       status: 'pending',
     });
@@ -41,7 +74,7 @@ router.post('/', auth, async (req, res) => {
     await Notification.create({
       type: 'new_order',
       title: 'New Order Received 🛒',
-      message: `${req.user.username} ordered ${qty > 1 ? qty + 'x ' : ''}${foodItem} (${orderType || 'delivery'}) — ${deliveryPlace}`,
+      message: `${req.user.username} placed an order for ${orderItems.length} item(s) (${orderType || 'delivery'}) — Total: ₹${total}`,
       customer: req.user.id,
       refId: order._id,
     });

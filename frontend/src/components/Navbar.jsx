@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Bell, LogOut, User, ChefHat, LayoutDashboard, Settings, Menu, X, CalendarDays, MessageSquare, Sun, Moon } from 'lucide-react';
+import { ShoppingCart, Bell, LogOut, User, ChefHat, LayoutDashboard, Settings, Menu, X, CalendarDays, MessageSquare, Sun, Moon, MoreVertical } from 'lucide-react';
 import API from '../api';
 import CartSidebar from './CartSidebar';
 import { useCart } from '../context/CartContext';
@@ -167,9 +167,9 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger (3 dots) */}
         <button className={styles.hamburger} onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          {mobileOpen ? <X size={22} /> : <MoreVertical size={22} />}
         </button>
       </nav>
 

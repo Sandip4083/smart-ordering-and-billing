@@ -154,18 +154,22 @@
 
 /* Mobile menu */
 .mobileMenu {
-  display: none; flex-direction: column;
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 12px 20px;
+  display: flex; flex-direction: column;
+  position: fixed; top: 60px; left: 0; width: 100vw; height: calc(100vh - 60px);
+  background: var(--surface); 
+  padding: 20px 40px; 
+  z-index: 199;
+  backdrop-filter: blur(20px);
+  overflow-y: auto;
 }
 .mobileMenu a, .mobileMenu button {
-  display: block; padding: 12px 0; color: var(--muted);
-  font-size: 0.9rem; font-weight: 500;
+  display: block; padding: 18px 0; color: var(--text);
+  font-size: 1.1rem; font-weight: 600;
   border: none; background: none; text-align: left; cursor: pointer;
-  border-bottom: 1px solid var(--border); text-decoration: none;
-  transition: color 0.2s;
+  border-bottom: 1px solid rgba(184,158,96,0.1); text-decoration: none;
+  transition: all 0.2s;
 }
-.mobileMenu a:hover, .mobileMenu button:hover { color: var(--gold); }
+.mobileMenu a:hover, .mobileMenu button:hover { color: var(--gold); padding-left: 10px; }
 
 @media (max-width: 768px) {
   .links { display: none; }

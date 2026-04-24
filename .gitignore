@@ -8,6 +8,4 @@ dist/
 frontend/dist/
 *.log
 .DS_Store
-legacy_php_code/
-gallery.js
-header.js
+scratch/

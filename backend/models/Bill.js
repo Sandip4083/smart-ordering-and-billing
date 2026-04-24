@@ -11,6 +11,8 @@ const BillSchema = new mongoose.Schema({
   total:        Number,
   status:       { type: String, enum: ['pending', 'paid'], default: 'pending' },
   paidAt:       Date,
+  paymentMethod:{ type: String, enum: ['razorpay', 'paytm', 'phonepe', 'googlepay', 'upi', 'cash', 'admin'], default: 'admin' },
+  transactionId:{ type: String, default: null },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Bill', BillSchema);

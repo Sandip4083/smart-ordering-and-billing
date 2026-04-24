@@ -16,6 +16,8 @@ app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/bills', require('./routes/bills'));
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/favorites', require('./routes/favorites'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/payments', require('./routes/payments'));
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))

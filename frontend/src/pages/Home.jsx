@@ -13,12 +13,12 @@ const FEATURES = [
 ];
 
 const CUISINES = [
-  { name: 'Indian',   flag: '🇮🇳', img: '/quisines/Indian1.jpg',    tag: 'Spicy & Aromatic' },
-  { name: 'Chinese',  flag: '🇨🇳', img: '/quisines/chinese1.jpg',   tag: 'Rich & Savory' },
-  { name: 'Italian',  flag: '🇮🇹', img: '/quisines/italian1.webp',  tag: 'Fresh & Classic' },
-  { name: 'Mexican',  flag: '🇲🇽', img: '/quisines/mexican1.webp',  tag: 'Bold & Vibrant' },
-  { name: 'African',  flag: 'Af',  img: '/quisines/africa1.webp',   tag: 'Hearty & Unique' },
-  { name: 'French',   flag: '🇫🇷', img: '/quisines/french2.jpg',    tag: 'Elegant & Refined' },
+  { name: 'North Indian', flag: '🍛', img: '/gen_imgs/authentic/dal_makhani.png',  tag: 'Rich & Creamy' },
+  { name: 'South Indian', flag: '🌴', img: 'https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&q=80',  tag: 'Crispy & Tangy' },
+  { name: 'East Indian',  flag: '🌶️', img: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&q=80',        tag: 'Subtle & Sweet' },
+  { name: 'West Indian',  flag: '🥥', img: 'https://images.unsplash.com/photo-1750767396956-da1796f33ad1?w=600&q=80',     tag: 'Spicy & Vibrant' },
+  { name: 'Street Food',  flag: '🔥', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80',       tag: 'Chatpata Joy' },
+  { name: 'Desserts',     flag: '🍮', img: 'https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?w=600&q=80',    tag: 'Sweet Endings' },
 ];
 
 const STEPS = [
@@ -29,12 +29,12 @@ const STEPS = [
 ];
 
 const GALLERY = [
-  '/restu/pexels-chanwalrus-958545.jpg',
-  '/restu/pexels-chevanon-323682.jpg',
-  '/restu/pexels-evonics-1058277.jpg',
-  '/restu/pexels-flodahm-541216.jpg',
-  '/restu/pexels-life-of-pix-67468.jpg',
-  '/restu/pexels-mat-brown-150387-1395967.jpg',
+  'https://images.unsplash.com/photo-1742281258189-3b933879867a?w=600&q=80',
+  '/gen_imgs/authentic/aloo_paratha.png',
+  '/gen_imgs/authentic/tandoori_chicken.png',
+  'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&q=80',
+  '/gen_imgs/authentic/paneer_tikka.png',
+  '/gen_imgs/authentic/kashmiri_pulao.png',
 ];
 
 const REVIEWS = [
@@ -51,7 +51,7 @@ export default function Home() {
       {/* ── HERO IMAGE & CONTENT ── */}
       <section className={styles.heroSection}>
         <img 
-          src="/restu/image.png" 
+          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400&q=80" 
           alt="Restaurant Background" 
           className={styles.videoBg} 
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
